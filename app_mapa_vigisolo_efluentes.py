@@ -8,7 +8,7 @@ from streamlit_folium import st_folium
 sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4rNqe1-YHIaKxLgyEbhN0tNytQixaNJnVfcyI0PN6ajT0KXzIGlh_dBrWFs6R9QqCEJ_UTGp3KOmL/pub?gid=2030912678&single=true&output=csv"
 
 # Configuração da página
-st.set_page_config(page_title="Mapa VigiSolo", layout="wide")
+st.set_page_config(page_title="Mapa Efluentes", layout="wide")
 
 # Reduzir espaço inferior
 st.markdown("""
