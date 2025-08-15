@@ -19,7 +19,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🗺️ Mapa Áreas Programa VigiSolo")
+st.title("🗺️ Mapa de Efluentes")
 
 # Estado de exibição do mapa
 if "mostrar_mapa" not in st.session_state:
