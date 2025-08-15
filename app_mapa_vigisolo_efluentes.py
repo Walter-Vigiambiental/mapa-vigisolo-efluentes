@@ -82,39 +82,23 @@ if st.session_state.mostrar_mapa:
         for _, row in df_filtrado.iterrows():
             imagem_html = f'<br><img src="{row["URL_FOTO"]}" width="250">' if pd.notna(row.get("URL_FOTO")) else ""
 
-            risco = str(row.get('RISCO', 'Não informado')).strip()
-            risco_lower = risco.lower()
-            if "alto" in risco_lower:
-                cor_icon = "darkred"
-                emoji_risco = "🔴"
-            elif "médio" in risco_lower or "medio" in risco_lower:
-                cor_icon = "orange"
-                emoji_risco = "🟠"
-            elif "baixo" in risco_lower:
-                cor_icon = "green"
-                emoji_risco = "🟢"
-            else:
-                cor_icon = "dark gray"
-                emoji_risco = "⚪"
-
             popup_text = (
                 f"<strong>Área:</strong> {row['DENOMINAÇÃO DA ÁREA']}<br>"
                 f"<strong>Bairro:</strong> {row['BAIRRO']}<br>"
                 f"<strong>Contaminantes:</strong> {row['CONTAMINANTES']}<br>"
                 f"<strong>População Exposta:</strong> {row['POPULAÇÃO EXPOSTA']}<br>"
                 f"<strong>Data:</strong> {row['DATA'].strftime('%d/%m/%Y')}<br>"
-                f"<strong>Coordenadas:</strong> {row['lat']}, {row['lon']}<br>"
-                f"<strong>Risco:</strong> {emoji_risco} {risco}"
+                f"<strong>Coordenadas:</strong> {row['lat']}, {row['lon']}"
                 f"{imagem_html}"
             )
 
-            iframe = folium.IFrame(html=popup_text, width=300, height=320)
+            iframe = folium.IFrame(html=popup_text, width=300, height=300)
             popup = folium.Popup(iframe, max_width=300)
 
             folium.Marker(
                 location=[row['lat'], row['lon']],
                 popup=popup,
-                icon=folium.Icon(color=cor_icon, icon="exclamation-sign"),
+                icon=folium.Icon(color="blue", icon="info-sign"),
             ).add_to(marker_cluster)
 
         st_folium(m, width=1000, height=600, returned_objects=[])
@@ -128,3 +112,4 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True
 )
+
