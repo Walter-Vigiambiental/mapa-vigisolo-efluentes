@@ -4,8 +4,8 @@ import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 
-# URL da planilha pública (CSV)
-sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4rNqe1-YHIaKxLgyEbhN0tNytQixaNJnVfcyI0PN6ajT0KXzIGlh_dBrWFs6R9QqCEJ_UTGp3KOmL/pub?gid=805025970&single=true&output=csv"
+# URL da nova planilha pública (CSV)
+sheet_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4rNqe1-YHIaKxLgyEbhN0tNytQixaNJnVfcyI0PN6ajT0KXzIGlh_dBrWFs6R9QqCEJ_UTGp3KOmL/pub?gid=2030912678&single=true&output=csv"
 
 # Configuração da página
 st.set_page_config(page_title="Mapa VigiSolo", layout="wide")
@@ -28,16 +28,7 @@ if "mostrar_mapa" not in st.session_state:
 # Carregar dados
 def carregar_dados():
     df = pd.read_csv(sheet_url)
-    if 'Latitude' in df.columns and 'Longitude' in df.columns:
-        df['lat'] = pd.to_numeric(df['Latitude'], errors='coerce')
-        df['lon'] = pd.to_numeric(df['Longitude'], errors='coerce')
-    elif 'COORDENADAS' in df.columns:
-        coords = df['COORDENADAS'].str.split(',', expand=True)
-        df['lat'] = pd.to_numeric(coords[0], errors='coerce')
-        df['lon'] = pd.to_numeric(coords[1], errors='coerce')
-    else:
-        st.error("Não foram encontradas colunas de coordenadas na planilha.")
-        st.stop()
+    df[['lat', 'lon']] = df['COORDENADAS'].str.split(', ', expand=True).astype(float)
     df['DATA'] = pd.to_datetime(df['DATA'], errors='coerce', dayfirst=True)
     df['ANO'] = df['DATA'].dt.year
     df['MES'] = df['DATA'].dt.month
