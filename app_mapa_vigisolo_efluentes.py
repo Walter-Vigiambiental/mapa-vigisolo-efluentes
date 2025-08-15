@@ -29,10 +29,12 @@ if "mostrar_mapa" not in st.session_state:
 def carregar_dados():
     df = pd.read_csv(sheet_url)
     if 'Latitude' in df.columns and 'Longitude' in df.columns:
-        df['lat'] = df['Latitude'].astype(float)
-        df['lon'] = df['Longitude'].astype(float)
+        df['lat'] = pd.to_numeric(df['Latitude'], errors='coerce')
+        df['lon'] = pd.to_numeric(df['Longitude'], errors='coerce')
     elif 'COORDENADAS' in df.columns:
-        df[['lat', 'lon']] = df['COORDENADAS'].str.split(',', expand=True).astype(float)
+        coords = df['COORDENADAS'].str.split(',', expand=True)
+        df['lat'] = pd.to_numeric(coords[0], errors='coerce')
+        df['lon'] = pd.to_numeric(coords[1], errors='coerce')
     else:
         st.error("Não foram encontradas colunas de coordenadas na planilha.")
         st.stop()
